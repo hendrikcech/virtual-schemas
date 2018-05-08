@@ -22,7 +22,7 @@ script:
   # - while true; do docker exec exasoldb find / -iname EXAConf; sleep 5; done &
   # - docker logs -f -t exasoldb
   - CONFIG='/home/travis/build/hendrikcech/virtual-schemas/jdbc-adapter/integration-test-data/integration-test-travis.yaml'
-  - while [ ! -f "/exa/etc/EXAConf" ]; do sleep 1; done
+  - while docker exec exasoldb test ! -f "/exa/etc/EXAConf"; do sleep 1; done
   - W_PW=$(docker exec exasoldb cat /exa/etc/EXAConf | awk '/WritePasswd/{ print $3; }' | base64 -d)
   - echo $W_PW
   - sed -i -e "s/BUCKET_FS_PASSWORD/$W_PW/" "$CONFIG"
