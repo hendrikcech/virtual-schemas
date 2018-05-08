@@ -4,7 +4,7 @@ general:
   debug:            false
   debugAddress:     '192.168.0.12:3000'  # Address which will be defined as DEBUG_ADDRESS in the virtual schemas
   bucketFsUrl:      http://127.0.0.1:2580/default
-  bucketFsPassword: qG3CA5cOdxPp1FiwQX4Q88
+  bucketFsPassword: BUCKET_FS_PASSWORD
   jdbcAdapterPath:  /buckets/bfsdefault/default/virtualschema-jdbc-adapter-dist.jar
 
 exasol:
@@ -13,8 +13,6 @@ exasol:
   user:     sys
   password: exasol
 
-
-  
 # Generic sql dialect is tested via MySQL
 generic:
   runIntegrationTests: false

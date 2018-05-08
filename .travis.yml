@@ -9,6 +9,8 @@ services:
 before_install:
   - docker pull exasol/docker-db:latest
   - docker run --name exasoldb -p 127.0.0.1:8563:8888 -p 127.0.0.1:2580:6583 --detach --privileged --stop-timeout 120  exasol/docker-db:latest
+  - docker pull sath89/oracle-12c:novnc
+  - docker run --name oracledb -d -p 1521:1521 sath89/oracle-12c:novnc
 
 matrix:
   include:
@@ -17,6 +19,10 @@ matrix:
 
 # build a jar with all dependencies. Will also run tests.
 script:
+  - CONFIG='/home/travis/build/hendrikcech/virtual-schemas/jdbc-adapter/integration-test-data/integration-test-travis.yaml'
+  - W_PW=$(docker exec exasoldb cat /exa/etc/EXAConf | awk '/WritePasswd/{ print $3; }' | base64 -d)
+  - echo $W_PW
+  - sed -i -e "s/BUCKET_FS_PASSWORD/$W_PW/" "$CONFIG"
   - cd jdbc-adapter
   - mvn $MVN_ARGS clean package
-  - mvn verify -Pit -Dintegrationtest.configfile=/home/travis/build/hendrikcech/virtual-schemas/jdbc-adapter/integration-test-data/integration-test-travis.yaml
+  - mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
