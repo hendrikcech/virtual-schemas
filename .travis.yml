@@ -19,10 +19,10 @@ matrix:
 
 # build a jar with all dependencies. Will also run tests.
 script:
-  - while true; do docker exec exasoldb find / -iname EXAConf; sleep 5; done &
-  - docker logs -f -t exasoldb
+  # - while true; do docker exec exasoldb find / -iname EXAConf; sleep 5; done &
+  # - docker logs -f -t exasoldb
   - CONFIG='/home/travis/build/hendrikcech/virtual-schemas/jdbc-adapter/integration-test-data/integration-test-travis.yaml'
-  - EXACONF=$(docker exec exasoldb find / -iname EXAConf)
+  - while [ -z "$EXACONF" ]; do EXACONF=$(docker exec exasoldb find / -iname EXAConf); sleep 5; done
   - echo $EXACONF
   - W_PW=$(docker exec exasoldb cat "$EXACONF" | awk '/WritePasswd/{ print $3; }' | base64 -d)
   - echo $W_PW
