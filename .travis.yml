@@ -20,7 +20,9 @@ matrix:
 # build a jar with all dependencies. Will also run tests.
 script:
   - CONFIG='/home/travis/build/hendrikcech/virtual-schemas/jdbc-adapter/integration-test-data/integration-test-travis.yaml'
-  - W_PW=$(docker exec exasoldb cat /exa/etc/EXAConf | awk '/WritePasswd/{ print $3; }' | base64 -d)
+  - EXACONF=$(docker exec exasoldb find / -name EXAConf)
+  - echo $EXACONF
+  - W_PW=$(docker exec exasoldb cat "$EXACONF" | awk '/WritePasswd/{ print $3; }' | base64 -d)
   - echo $W_PW
   - sed -i -e "s/BUCKET_FS_PASSWORD/$W_PW/" "$CONFIG"
   - cd jdbc-adapter
