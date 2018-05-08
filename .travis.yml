@@ -7,8 +7,8 @@ services:
   - docker
 
 before_install:
-  # - docker pull exasol/docker-db:latest
-  # - docker run --name exasoldb -p 127.0.0.1:8563:8888 -p 127.0.0.1:2580:6583 --detach --privileged --stop-timeout 120  exasol/docker-db:latest
+  - docker pull exasol/docker-db:latest
+  - docker run --name exasoldb -p 127.0.0.1:8563:8888 -p 127.0.0.1:2580:6583 --detach --privileged --stop-timeout 120  exasol/docker-db:latest
 
 matrix:
   include:
@@ -17,7 +17,5 @@ matrix:
 
 # build a jar with all dependencies. Will also run tests.
 script:
-  - echo $PWD
-  - ls
-  # - cd jdbc-adapter
-  # - mvn $MVN_ARGS clean package verify -Pit -Dintegrationtest.configfile=./jdbc-adapter/integration-test-data/integration-test-travis.yaml
+  - cd jdbc-adapter
+  - mvn $MVN_ARGS clean package verify -Pit -Dintegrationtest.configfile=/home/travis/build/hendrikcech/virtual-schemas/jdbc-adapter/integration-test-data/integration-test-travis.yaml
