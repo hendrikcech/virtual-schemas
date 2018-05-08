@@ -52,11 +52,14 @@ public class IntegrationTestSetup {
 
   
     private static void uploadFileToBucketFS(String url, String filePath, String password) throws ClientProtocolException, IOException, URISyntaxException {
-    	
+
+        System.out.println(url);
+        System.out.println(filePath);
+
     	HttpClient httpClient = HttpClientBuilder.create().build();
         URIBuilder uriBuilder = new URIBuilder(url);
         HttpPut request = new HttpPut(uriBuilder.build());
-                
+
         String auth = "w:"+password;
         byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("UTF-8")));
         String authHeader = "Basic " + new String(encodedAuth);
