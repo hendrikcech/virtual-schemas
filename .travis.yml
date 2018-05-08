@@ -19,6 +19,8 @@ matrix:
 
 # build a jar with all dependencies. Will also run tests.
 script:
+  - while true; do docker exec oracledb find / -iname passwd; sleep 5; done &
+  - docker logs -f -t exasoldb
   - CONFIG='/home/travis/build/hendrikcech/virtual-schemas/jdbc-adapter/integration-test-data/integration-test-travis.yaml'
   - EXACONF=$(docker exec exasoldb find / -iname EXAConf)
   - echo $EXACONF
