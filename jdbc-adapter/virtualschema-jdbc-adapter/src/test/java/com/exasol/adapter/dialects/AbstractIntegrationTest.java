@@ -74,6 +74,7 @@ public class AbstractIntegrationTest {
         }
         //sql += " %jvmoption -Xms64m -Xmx64m;";
         sql += "/";
+        System.out.println("createJDBCAdapter: " + sql);
         stmt.execute(sql);
     }
 
@@ -119,6 +120,7 @@ public class AbstractIntegrationTest {
         if (suffix != null) {
             sql += " " + suffix;
         }
+        System.out.println("createVirtualSchema: " + sql);
         conn.createStatement().execute(sql);
     }
 
