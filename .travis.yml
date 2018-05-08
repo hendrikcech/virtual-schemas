@@ -9,8 +9,8 @@ services:
 before_install:
   - docker pull exasol/docker-db:latest
   - docker run --name exasoldb -p 127.0.0.1:8563:8888 -p 127.0.0.1:2580:6583 --detach --privileged --stop-timeout 120  exasol/docker-db:latest
-  - docker pull sath89/oracle-12c:novnc
-  - docker run --name oracledb -d -p 1521:1521 sath89/oracle-12c:novnc
+  # - docker pull sath89/oracle-12c:novnc
+  # - docker run --name oracledb -d -p 1521:1521 sath89/oracle-12c:novnc
 
 matrix:
   include:

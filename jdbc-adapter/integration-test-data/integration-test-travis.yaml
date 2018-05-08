@@ -5,7 +5,7 @@ general:
   debugAddress:     '192.168.0.12:3000'  # Address which will be defined as DEBUG_ADDRESS in the virtual schemas
   bucketFsUrl:      http://127.0.0.1:2580/default
   bucketFsPassword: BUCKET_FS_PASSWORD
-  jdbcAdapterPath:  /buckets/bfsdefault/default/virtualschema-jdbc-adapter-dist.jar
+  jdbcAdapterPath:  /buckets/bfsdefault/default/virtualschema-jdbc-adapter-dist-1.0.1-SNAPSHOT.jar
 
 exasol:
   runIntegrationTests: true
