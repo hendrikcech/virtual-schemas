@@ -44,7 +44,7 @@ public class IntegrationTestSetup {
         String jarLocalPath = "../" + artifactDistName + "/target/" + jarName;
      
         
-        uploadFileToBucketFS(bucketFSurl+"/"+jarName, jarLocalPath, bucketFSpassword);
+        uploadFileToBucketFS(bucketFSurl+"/drivers/jdbc/"+jarName, jarLocalPath, bucketFSpassword);
         
         //uploadFileToBucketFS("http://192.168.106.131:2580/bucket1/original-virtualschema-jdbc-adapter-dist-1.0.1-SNAPSHOT.jar", "C:\\Users\\tb\\Desktop\\github-repos\\virtual-schemas\\jdbc-adapter\\virtualschema-jdbc-adapter-dist\\target\\original-virtualschema-jdbc-adapter-dist-1.0.1-SNAPSHOT.jar","bucket1");
                    
