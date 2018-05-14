@@ -52,8 +52,10 @@ public class ExasolSqlDialectIT extends AbstractIntegrationTest {
         getConnection().createStatement().execute(udf);
 
         ResultSet result = getConnection().createStatement().executeQuery("SELECT test.ls('/buckets/bfsdefault/default')");
-        while (result.next()) {
+        int i = 0;
+        while (result.next() && i < 10) {
             System.out.println(result);
+            i++;
         }
         System.out.println("---");
 
