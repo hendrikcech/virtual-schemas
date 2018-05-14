@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -67,6 +68,20 @@ public class ExasolSqlDialectIT extends AbstractIntegrationTest {
                 connectionString, IS_LOCAL,
                 getConfig().debugAddress(),
                 "",null);
+
+        System.out.println("CREATE SCHEMA test" + new Date());
+        getConnection().createStatement().execute("CREATE SCHEMA test");
+        System.out.println("CREATE TABLE " + new Date());
+        getConnection().createStatement().execute("CREATE TABLE test.ttable (a double, b double)");
+        System.out.println("INSERT INTO " + new Date());
+        getConnection().createStatement().execute("INSERT INTO test.ttable VALUES (1,2)");
+        System.out.println("SELECT * " + new Date());
+        getConnection().createStatement().executeQuery("SELECT * FROM test.ttable");
+        System.out.println("SELECT a " + new Date());
+        getConnection().createStatement().executeQuery("SELECT a FROM test.ttable");
+        System.out.println("SELECT b " + new Date());
+        getConnection().createStatement().executeQuery("SELECT b FROM test.ttable");
+        System.out.println("done " + new Date());
     }
 
     private static void createTestSchema() throws SQLException {

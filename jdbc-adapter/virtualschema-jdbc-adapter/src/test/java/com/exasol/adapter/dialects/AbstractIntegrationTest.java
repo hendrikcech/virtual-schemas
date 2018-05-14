@@ -213,7 +213,9 @@ public class AbstractIntegrationTest {
     }
 
     public static void matchSingleRowExplain(Connection conn, String query, String expectedExplain, boolean isLocal) throws SQLException {
+        System.out.print("matchSingleRowExplain: EXPLAIN VIRTUAL " + query);
         ResultSet result = conn.createStatement().executeQuery("EXPLAIN VIRTUAL " + query);
+        System.out.println("... done!");
         result.next();
         if (isLocal) {
             assertEquals(expectedExplain, result.getString("PUSHDOWN_SQL"));
