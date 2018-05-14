@@ -29,4 +29,5 @@ script:
   - mvn $MVN_ARGS pre-integration-test -DskipTests -Pit -Dintegrationtest.configfile="$CONFIG"
   - sleep 60
   - while true; do free -hm; ps -Ao user,comm,%cpu,%mem,tty --sort=-pcpu | head -n 6; sleep 10; done &
+  - docker logs -f exasoldb &
   - mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
