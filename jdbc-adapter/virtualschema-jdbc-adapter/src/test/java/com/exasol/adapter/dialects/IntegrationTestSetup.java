@@ -24,7 +24,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
  */
 public class IntegrationTestSetup {
 
-    public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
 
         System.out.println("Start setup of the integration test environment");
         String projectVersion = args[0];
