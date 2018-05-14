@@ -43,11 +43,21 @@ public class ExasolSqlDialectIT extends AbstractIntegrationTest {
 
         getConnection().createStatement().execute("CREATE SCHEMA test");
 
+        System.out.println("Sleep...");
+        try {
+            Thread.sleep(1000 * 60);
+        } catch (InterruptedException e) {
+
+        }
+
         String udf = "CREATE PYTHON SCALAR SCRIPT test.ls(p VARCHAR(10000)) EMITS (n VARCHAR(10000)) as\n" +
                 "def run(ctx):\n" +
                 "  import os\n" +
                 "  for x in os.listdir(ctx.p):\n" +
                 "    ctx.emit(os.path.join(ctx.p, x))\n" +
+                "    if os.path.isdir(x):\n" +
+                "      for y in os.listdir(x):\n" +
+                "        ctx.emit(os.path.join(ctx.p, os.path.join(x, y)))\n" +
                 "/";
         getConnection().createStatement().execute(udf);
 
