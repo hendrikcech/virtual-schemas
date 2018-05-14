@@ -52,7 +52,10 @@ public class AbstractIntegrationTest {
     }
 
     public ResultSet executeQuery(Connection conn, String query) throws SQLException {
-        return conn.createStatement().executeQuery(query);
+        System.out.print("Execute: " + query);
+        ResultSet result = conn.createStatement().executeQuery(query);
+        System.out.println("... done!");
+        return result;
     }
 
     public ResultSet executeQuery(String query) throws SQLException {
@@ -136,6 +139,7 @@ public class AbstractIntegrationTest {
         sql += " TO '" + connectionString + "'";
         sql += " USER '" + user + "'";
         sql += " IDENTIFIED BY '" + password +"'";
+        System.out.println("createConnection: " + sql);
         conn.createStatement().execute(sql);
     }
 
