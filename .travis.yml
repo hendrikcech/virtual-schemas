@@ -30,3 +30,4 @@ script:
   - mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
   - R_PW=$(docker exec exasoldb cat /exa/etc/EXAConf | awk '/ReadPasswd/{ print $3; }' | base64 -d); echo $R_PW
   - curl -i http://r:$R_PW@127.0.0.1:2580/default
+  - docker exec exasoldb curl -i http://r:$R_PW@127.0.0.1:2580/default
