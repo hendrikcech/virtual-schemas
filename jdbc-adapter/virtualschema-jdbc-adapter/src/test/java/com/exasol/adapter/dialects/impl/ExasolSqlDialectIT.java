@@ -41,7 +41,9 @@ public class ExasolSqlDialectIT extends AbstractIntegrationTest {
         setConnection(connectToExa());
         String connectionString = "jdbc:exa:localhost:" + getPortOfConnectedDatabase();  // connect via Virtual Schema to local database
 
-        String udf = "CREATE PYTHON SCALAR SCRIPT ls(p VARCHAR(10000)) EMITS (n VARCHAR(10000)) as\n" +
+        getConnection().createStatement().execute("CREATE SCHEMA test");
+
+        String udf = "CREATE PYTHON SCALAR SCRIPT test.ls(p VARCHAR(10000)) EMITS (n VARCHAR(10000)) as\n" +
                 "def run(ctx):\n" +
                 "  import os\n" +
                 "  for x in os.listdir(ctx.p):\n" +
@@ -49,7 +51,7 @@ public class ExasolSqlDialectIT extends AbstractIntegrationTest {
                 "/";
         getConnection().createStatement().execute(udf);
 
-        ResultSet result = getConnection().createStatement().executeQuery("SELECT ls('/buckets/bfsdefault/default')");
+        ResultSet result = getConnection().createStatement().executeQuery("SELECT test.ls('/buckets/bfsdefault/default')");
         while (result.next()) {
             System.out.println(result);
         }
