@@ -40,6 +40,21 @@ public class ExasolSqlDialectIT extends AbstractIntegrationTest {
         Assume.assumeTrue(getConfig().exasolTestsRequested());
         setConnection(connectToExa());
         String connectionString = "jdbc:exa:localhost:" + getPortOfConnectedDatabase();  // connect via Virtual Schema to local database
+
+        String udf = "CREATE PYTHON SCALAR SCRIPT ls(p VARCHAR(10000)) EMITS (n VARCHAR(10000)) as\n" +
+                "def run(ctx):\n" +
+                "  import os\n" +
+                "  for x in os.listdir(ctx.p):\n" +
+                "    ctx.emit(os.path.join(ctx.p, x))\n" +
+                "/";
+        getConnection().createStatement().execute(udf);
+
+        ResultSet result = getConnection().createStatement().executeQuery("SELECT ls('/buckets/bfsdefault/default')");
+        while (result.next()) {
+            System.out.println(result);
+        }
+        System.out.println("---");
+
         // The EXASOL jdbc driver is included in the Maven dependencies, so no need to add
         List<String> includes = ImmutableList.of(getConfig().getJdbcAdapterPath());
         createJDBCAdapter(includes);

@@ -29,5 +29,5 @@ script:
   # - curl -i -X PUT -T ../settings.cfg http://w:$W_PW@127.0.0.1:2580/default/drivers/jdbc/settings.cfg
   - mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
   - R_PW=$(docker exec exasoldb cat /exa/etc/EXAConf | awk '/ReadPasswd/{ print $3; }' | base64 -d); echo $R_PW
-  - curl -i http://r:$R_PW@127.0.0.1:2580/default
+  - curl -i http://r:$R_PW@127.0.0.1:6583/default
   - docker exec exasoldb curl -i http://r:$R_PW@127.0.0.1:6583/default
