@@ -42,6 +42,12 @@ public class ExasolSqlDialectIT extends AbstractIntegrationTest {
         setConnection(connectToExa());
         String connectionString = "jdbc:exa:localhost:" + getPortOfConnectedDatabase();  // connect via Virtual Schema to local database
 
+        String scriptOutputAddress = System.getenv("SCRIPT_OUTPUT_ADDRESS");
+        if (scriptOutputAddress != null) {
+            System.out.println("ALTER SESSION " + scriptOutputAddress);
+            getConnection().createStatement().execute("ALTER SESSION SET SCRIPT_OUTPUT_ADDRESS='" + scriptOutputAddress + "'");
+        }
+
         // The EXASOL jdbc driver is included in the Maven dependencies, so no need to add
         List<String> includes = ImmutableList.of(getConfig().getJdbcAdapterPath());
         createJDBCAdapter(includes);
@@ -68,20 +74,6 @@ public class ExasolSqlDialectIT extends AbstractIntegrationTest {
                 connectionString, IS_LOCAL,
                 getConfig().debugAddress(),
                 "",null);
-
-        System.out.println("CREATE SCHEMA test" + new Date());
-        getConnection().createStatement().execute("CREATE SCHEMA test");
-        System.out.println("CREATE TABLE " + new Date());
-        getConnection().createStatement().execute("CREATE TABLE test.ttable (a double, b double)");
-        System.out.println("INSERT INTO " + new Date());
-        getConnection().createStatement().execute("INSERT INTO test.ttable VALUES (1,2)");
-        System.out.println("SELECT * " + new Date());
-        getConnection().createStatement().executeQuery("SELECT * FROM test.ttable");
-        System.out.println("SELECT a " + new Date());
-        getConnection().createStatement().executeQuery("SELECT a FROM test.ttable");
-        System.out.println("SELECT b " + new Date());
-        getConnection().createStatement().executeQuery("SELECT b FROM test.ttable");
-        System.out.println("done " + new Date());
     }
 
     private static void createTestSchema() throws SQLException {
