@@ -14,10 +14,11 @@ before_install:
 
 matrix:
   include:
-    - jdk: "oraclejdk8"
+    - jdk: "openjdk8"
       env: MVN_ARGS=""
+    # - jdk: "oraclejdk8"
+    #   env: MVN_ARGS=""
 
-# build a jar with all dependencies. Will also run tests.
 script:
   - CONFIG='/home/travis/build/hendrikcech/virtual-schemas/jdbc-adapter/integration-test-data/integration-test-travis.yaml'
   - while [ -z "$W_PW" ]; do W_PW=$(docker exec exasoldb cat /exa/etc/EXAConf | awk '/WritePasswd/{ print $3; }' | base64 -d); sleep 1; done; echo $W_PW
