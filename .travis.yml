@@ -7,8 +7,8 @@ services:
   - docker
 
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y strace
+  # - sudo apt-get -qq update
+  # - sudo apt-get install -y strace
   - docker pull exasol/docker-db:latest
   - docker run --name exasoldb -p 127.0.0.1:8888:8888 -p 127.0.0.1:6583:6583 --detach --privileged --stop-timeout 120  exasol/docker-db:latest
   # - docker pull sath89/oracle-12c:novnc
@@ -20,6 +20,7 @@ matrix:
       env: MVN_ARGS=""
 
 script:
+  - strace -e trace=network ls
   - cd jdbc-adapter
   - CONFIG='/home/travis/build/hendrikcech/virtual-schemas/jdbc-adapter/integration-test-data/integration-test-travis.yaml'
   - while [ -z "$W_PW" ]; do W_PW=$(docker exec exasoldb cat /exa/etc/EXAConf | awk '/WritePasswd/{ print $3; }' | base64 -d); sleep 1; done; echo $W_PW
@@ -41,4 +42,4 @@ script:
       sleep 1;
     done &
   - sleep 60
-  - strace -tt -T -s 1024 -e trace=%network mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
+  - strace -tt -T -s 1024 -e trace=network mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
