@@ -26,10 +26,10 @@ script:
   - while [ $(docker exec exasoldb find /exa/data/bucketfs/bfsdefault/.dest -name exaudfclient -printf '.' | wc -c) -lt 1 ]; do sleep 1; done
   - mvn $MVN_ARGS pre-integration-test -DskipTests -Pit -Dintegrationtest.configfile="$CONFIG"
   - SCRIPT_OUTPUT_ADDRESS=$(ip addr show docker0 | perl -n -e '/inet ([0-9.]+)/ && print $1')
-  - export IFS=''; python tools/udf_debug.py -s "$SCRIPT_OUTPUT_ADDRESS" -p 3000 |
+  - (export IFS=''; python tools/udf_debug.py -s "$SCRIPT_OUTPUT_ADDRESS" -p 3000 |
       while read line; do
         echo "$(date +%H:%M:%S:%N) $line";
-      done &
+      done) &
   - export SCRIPT_OUTPUT_ADDRESS+=":3000"
   - touch /tmp/current.list;
     while true; do
