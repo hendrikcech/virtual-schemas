@@ -23,7 +23,7 @@ script:
   - while [ -z "$W_PW" ]; do W_PW=$(docker exec exasoldb cat /exa/etc/EXAConf | awk '/WritePasswd/{ print $3; }' | base64 -d); sleep 1; done; echo $W_PW
   - sed -i -e "s/BUCKET_FS_PASSWORD/$W_PW/" "$CONFIG"
   - mvn $MVN_ARGS clean package
-  - while [ $(docker exec exasoldb find /exa/data/bucketfs/bfsdefault/.dest | grep -c exaudfclient) -lt 1 ]; printf '.'; do sleep 1; done
+  - while [ $(docker exec exasoldb find /exa/data/bucketfs/bfsdefault/.dest | grep -c exaudfclient) -lt 1 ]; docker exec exasoldb find -maxdepth 3 /exa/data/bucketfs/bfsdefault/.dest; echo; do sleep 5; done
   - mvn $MVN_ARGS pre-integration-test -DskipTests -Pit -Dintegrationtest.configfile="$CONFIG"
   - SCRIPT_OUTPUT_ADDRESS=$(ip addr show docker0 | perl -n -e '/inet ([0-9.]+)/ && print $1')
   - python tools/udf_debug.py -s "$SCRIPT_OUTPUT_ADDRESS" -p 3000 &
