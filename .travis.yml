@@ -48,13 +48,13 @@ script:
       sleep 1;
     done &
   - sleep 60
-  - (echo start sleeping $(date +'%H:%M:%S');
-     sleep 120;
-     echo "PS UND LSOF";
-     sudo lsof -i -u travis;
-     sudo ps auxww;
-     docker exec exasoldb sudo lsof -i;
-     docker exec exasoldb sudo ps auxww) &
-  - sudo ps auxww | grep '/usr/opt/EXASuite' | awk '{ print $2 }' |
-      xargs -L 1 -I {} sh -c 'echo attaching to pid {}; sudo strace -f -tt -T -e trace=network -p {} &'
+  # - (echo start sleeping $(date +'%H:%M:%S');
+  #    sleep 120;
+  #    echo "PS UND LSOF";
+  #    sudo lsof -i -u travis;
+  #    sudo ps auxww;
+  #    docker exec exasoldb sudo lsof -i;
+  #    docker exec exasoldb sudo ps auxww) &
+  # - sudo ps auxww | grep '/usr/opt/EXASuite' | awk '{ print $2 }' |
+  #     xargs -L 1 -I {} sh -c 'echo attaching to pid {}; sudo strace -f -tt -T -e trace=network -p {} &'
   - strace -f -tt -T -e trace=network mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
