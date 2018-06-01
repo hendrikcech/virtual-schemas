@@ -41,5 +41,5 @@ script:
       sleep 1;
     done &
   - sleep 60
-  - while true; do lsof -i; sleep 60; done &
-  - strace -f -tt -T -e trace=network mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
+  - while true; do sudo lsof -i; sleep 60; done &
+  - strace -f -tt -T -e trace=network -s 300 mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
