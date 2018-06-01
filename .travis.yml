@@ -44,11 +44,12 @@ script:
       sleep 1;
     done &
   - sleep 60
-  - while true; do
-      sudo lsof -i -u travis;
-      sudo ps auxww;
-      sleep 60;
-    done &
-  - sudo ps auxww | grep '/usr/opt/EXASuite' | awk '{ print $2 }' |
-      xargs -L 1 -I {} sh -c 'echo attaching to pid {}; sudo strace -f -tt -T -e trace=network -p {} &'
-  - strace -f -tt -T -e trace=network mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
+  # - while true; do
+  #     sudo lsof -i -u travis;
+  #     sudo ps auxww;
+  #     sleep 60;
+  #   done &
+  # - sudo ps auxww | grep '/usr/opt/EXASuite' | awk '{ print $2 }' |
+  #     xargs -L 1 -I {} sh -c 'echo attaching to pid {}; sudo strace -f -tt -T -e trace=network -p {} &'
+  # - strace -f -tt -T -e trace=network mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
+  - mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
