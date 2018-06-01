@@ -13,7 +13,7 @@ before_install:
     sudo sysctl -p;
     cat /proc/sys/net/ipv6/conf/all/disable_ipv6
   - docker pull exasol/docker-db:latest
-  - docker run --name exasoldb -p 127.0.0.1:8888:8888 -p 127.0.0.1:6583:6583 --detach --privileged --stop-timeout 120  exasol/docker-db:latest
+  - docker run --name exasoldb -p 127.0.0.1:8888:8888 -p 127.0.0.1:6583:6583 --detach --privileged --stop-timeout 120 --sysctl net.ipv6.conf.all.disable_ipv6=1 exasol/docker-db:latest
   # - docker pull sath89/oracle-12c:novnc
   # - docker run --name oracledb -d -p 1521:1521 sath89/oracle-12c:novnc
 
@@ -44,12 +44,11 @@ script:
       sleep 1;
     done &
   - sleep 60
-  # - while true; do
-  #     sudo lsof -i -u travis;
-  #     sudo ps auxww;
-  #     sleep 60;
-  #   done &
-  # - sudo ps auxww | grep '/usr/opt/EXASuite' | awk '{ print $2 }' |
-  #     xargs -L 1 -I {} sh -c 'echo attaching to pid {}; sudo strace -f -tt -T -e trace=network -p {} &'
-  # - strace -f -tt -T -e trace=network mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
-  - mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
+  - (sleep 120;
+      sudo lsof -i -u travis;
+      sudo ps auxww;
+      docker exec exasoldb sudo lsof -i -u travis;
+      docker exec exasoldb sudo ps auxww) &
+  - sudo ps auxww | grep '/usr/opt/EXASuite' | awk '{ print $2 }' |
+      xargs -L 1 -I {} sh -c 'echo attaching to pid {}; sudo strace -f -tt -T -e trace=network -p {} &'
+  - strace -f -tt -T -e trace=network mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
