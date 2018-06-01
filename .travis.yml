@@ -43,7 +43,7 @@ script:
   - sleep 60
   - while true; do
       sudo lsof -i -u travis;
-      ps auxww;
+      sudo ps auxww;
       sleep 60;
     done &
   - strace -f -tt -T -e trace=network -s 300 mvn $MVN_ARGS verify -Pit -Dintegrationtest.configfile="$CONFIG"
