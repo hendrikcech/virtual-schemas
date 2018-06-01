@@ -51,7 +51,7 @@ script:
   - (sleep 120;
       sudo lsof -i -u travis;
       sudo ps auxww;
-      docker exec exasoldb sudo lsof -i -u travis;
+      docker exec exasoldb sudo lsof -i;
       docker exec exasoldb sudo ps auxww) &
   - sudo ps auxww | grep '/usr/opt/EXASuite' | awk '{ print $2 }' |
       xargs -L 1 -I {} sh -c 'echo attaching to pid {}; sudo strace -f -tt -T -e trace=network -p {} &'
