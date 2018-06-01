@@ -14,6 +14,7 @@ before_install:
     cat /proc/sys/net/ipv6/conf/all/disable_ipv6
   - docker pull exasol/docker-db:latest
   - docker run --name exasoldb -p 127.0.0.1:8888:8888 -p 127.0.0.1:6583:6583 --detach --privileged --stop-timeout 120 --sysctl net.ipv6.conf.all.disable_ipv6=1 exasol/docker-db:latest
+  - docker exec exasoldb 'yum update -y --exclude=kernel* && yum install -y lsof'
   # - docker pull sath89/oracle-12c:novnc
   # - docker run --name oracledb -d -p 1521:1521 sath89/oracle-12c:novnc
 
