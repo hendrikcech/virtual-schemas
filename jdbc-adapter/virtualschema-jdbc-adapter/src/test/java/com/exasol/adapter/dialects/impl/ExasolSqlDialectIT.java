@@ -48,6 +48,9 @@ public class ExasolSqlDialectIT extends AbstractIntegrationTest {
             getConnection().createStatement().execute("ALTER SESSION SET SCRIPT_OUTPUT_ADDRESS='" + scriptOutputAddress + "'");
         }
 
+        // create CONN_EXASOL to test IMPORT_FROM_EXA
+        createConnection("CONN_EXASOL", "jdbc:exa:" + getConfig().getExasolAddress(), getConfig().getExasolUser(), getConfig().getExasolPassword());
+
         // The EXASOL jdbc driver is included in the Maven dependencies, so no need to add
         List<String> includes = ImmutableList.of(getConfig().getJdbcAdapterPath());
         createJDBCAdapter(includes);
@@ -56,24 +59,22 @@ public class ExasolSqlDialectIT extends AbstractIntegrationTest {
                 VIRTUAL_SCHEMA,
                 ExasolSqlDialect.NAME,
                 "", TEST_SCHEMA,
-                "",
-                getConfig().getExasolUser(),
-                getConfig().getExasolPassword(),
+                "CONN_EXASOL",
+                "", "",
                 "ADAPTER.JDBC_ADAPTER",
                 connectionString, IS_LOCAL,
                 getConfig().debugAddress(),
-                "", null);
+                "", "IMPORT_FROM_EXA='true'");
         createVirtualSchema(
                 VIRTUAL_SCHEMA_MIXED_CASE,
                 ExasolSqlDialect.NAME,
                 "", TEST_SCHEMA_MIXED_CASE,
-                "",
-                getConfig().getExasolUser(),
-                getConfig().getExasolPassword(),
+                "CONN_EXASOL",
+"", "",
                 "ADAPTER.JDBC_ADAPTER",
                 connectionString, IS_LOCAL,
                 getConfig().debugAddress(),
-                "",null);
+                "", "IMPORT_FROM_EXA='true'");
     }
 
     private static void createTestSchema() throws SQLException {
