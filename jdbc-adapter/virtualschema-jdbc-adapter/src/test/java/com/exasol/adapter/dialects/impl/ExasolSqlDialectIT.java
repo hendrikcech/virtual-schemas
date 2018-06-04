@@ -17,7 +17,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -41,13 +40,6 @@ public class ExasolSqlDialectIT extends AbstractIntegrationTest {
         Assume.assumeTrue(getConfig().exasolTestsRequested());
         setConnection(connectToExa());
         String connectionString = "jdbc:exa:localhost:" + getPortOfConnectedDatabase();  // connect via Virtual Schema to local database
-
-        String scriptOutputAddress = System.getenv("SCRIPT_OUTPUT_ADDRESS");
-        if (scriptOutputAddress != null) {
-            System.out.println("ALTER SESSION " + scriptOutputAddress);
-            getConnection().createStatement().execute("ALTER SESSION SET SCRIPT_OUTPUT_ADDRESS='" + scriptOutputAddress + "'");
-        }
-
         // The EXASOL jdbc driver is included in the Maven dependencies, so no need to add
         List<String> includes = ImmutableList.of(getConfig().getJdbcAdapterPath());
         createJDBCAdapter(includes);
