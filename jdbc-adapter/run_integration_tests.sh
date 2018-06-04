@@ -7,10 +7,9 @@
 # An Exasol instance is run using the exasol/docker-db image. Therefore, a
 # working installation of Docker and sudo privileges are required.
 
-location="$(dirname "$0")"
-config="$location/integration-test-data/integration-test-travis.yaml"
+cd "$(dirname "$0")"
 
-cd $location
+config="$(pwd)/integration-test-data/integration-test-travis.yaml"
 
 docker pull exasol/docker-db:latest
 docker run --name exasoldb \
