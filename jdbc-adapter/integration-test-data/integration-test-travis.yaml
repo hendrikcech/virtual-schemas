@@ -2,11 +2,11 @@
 
 general:
   debug:            false
-  debugAddress:     ''  # Address which will be defined as DEBUG_ADDRESS in the virtual schemas
+  debugAddress:     ''
   bucketFsUrl:      http://127.0.0.1:6583/default
+  # The bucketFsPassword placeholder will be automatically replaced by the integration test script. Do not modify the value!
   bucketFsPassword: BUCKET_FS_PASSWORD
   jdbcAdapterPath:  /buckets/bfsdefault/default/virtualschema-jdbc-adapter-dist-1.0.1-SNAPSHOT.jar
-  # jdbcAdapterPath:  /buckets/bfsdefault/default/drivers/jdbc/virtualschema-jdbc-adapter-dist-1.0.1-SNAPSHOT.jar
 
 exasol:
   runIntegrationTests: true
