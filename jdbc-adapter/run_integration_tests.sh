@@ -19,8 +19,8 @@ docker run --name exasoldb \
 
 # Wait for EXAConf to be generated
 while [ -z "$W_PW" ]; do
-    W_PW=$(docker exec exasoldb cat /exa/etc/EXAConf | awk '/WritePasswd/{ print $3; }' | base64 -d);
-    sleep 1;
+    W_PW=$(docker exec exasoldb cat /exa/etc/EXAConf | awk '/WritePasswd/{ print $3; }' | base64 -d)
+    sleep 1
 done
 sed -i -e "s/BUCKET_FS_PASSWORD/$W_PW/" "$config"
 
@@ -28,7 +28,7 @@ mvn clean package
 
 # Wait for exaudfclient to be extracted and available
 while [ $(docker exec exasoldb find /exa/data/bucketfs/bfsdefault/.dest -name exaudfclient -printf '.' | wc -c) -lt 1 ]; do
-    sleep 1;
+    sleep 1
 done
 
 # Upload virtualschema-jdbc-adapter jar and wait a bit to make sure it's available
