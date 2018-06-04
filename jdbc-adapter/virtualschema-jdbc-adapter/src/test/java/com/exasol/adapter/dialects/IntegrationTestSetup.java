@@ -44,7 +44,6 @@ public class IntegrationTestSetup {
         String jarLocalPath = "../" + artifactDistName + "/target/" + jarName;
      
         
-        // uploadFileToBucketFS(bucketFSurl+"/drivers/jdbc/"+jarName, jarLocalPath, bucketFSpassword);
         uploadFileToBucketFS(bucketFSurl+"/"+jarName, jarLocalPath, bucketFSpassword);
 
         //uploadFileToBucketFS("http://192.168.106.131:2580/bucket1/original-virtualschema-jdbc-adapter-dist-1.0.1-SNAPSHOT.jar", "C:\\Users\\tb\\Desktop\\github-repos\\virtual-schemas\\jdbc-adapter\\virtualschema-jdbc-adapter-dist\\target\\original-virtualschema-jdbc-adapter-dist-1.0.1-SNAPSHOT.jar","bucket1");
@@ -53,9 +52,6 @@ public class IntegrationTestSetup {
 
   
     private static void uploadFileToBucketFS(String url, String filePath, String password) throws ClientProtocolException, IOException, URISyntaxException {
-
-        System.out.println(url);
-        System.out.println(filePath);
 
     	HttpClient httpClient = HttpClientBuilder.create().build();
         URIBuilder uriBuilder = new URIBuilder(url);

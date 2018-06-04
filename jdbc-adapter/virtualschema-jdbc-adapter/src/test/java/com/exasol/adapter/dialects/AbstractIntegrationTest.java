@@ -52,10 +52,7 @@ public class AbstractIntegrationTest {
     }
 
     public ResultSet executeQuery(Connection conn, String query) throws SQLException {
-        System.out.print("Execute: " + query);
-        ResultSet result = conn.createStatement().executeQuery(query);
-        System.out.println("... done!");
-        return result;
+        return conn.createStatement().executeQuery(query);
     }
 
     public ResultSet executeQuery(String query) throws SQLException {
@@ -78,7 +75,6 @@ public class AbstractIntegrationTest {
         }
         //sql += " %jvmoption -Xms64m -Xmx64m;";
         sql += "/";
-        System.out.println("createJDBCAdapter: " + sql);
         stmt.execute(sql);
     }
 
@@ -124,7 +120,6 @@ public class AbstractIntegrationTest {
         if (suffix != null) {
             sql += " " + suffix;
         }
-        System.out.println("createVirtualSchema: " + sql);
         conn.createStatement().execute(sql);
     }
 
@@ -139,7 +134,6 @@ public class AbstractIntegrationTest {
         sql += " TO '" + connectionString + "'";
         sql += " USER '" + user + "'";
         sql += " IDENTIFIED BY '" + password +"'";
-        System.out.println("createConnection: " + sql);
         conn.createStatement().execute(sql);
     }
 
@@ -213,9 +207,7 @@ public class AbstractIntegrationTest {
     }
 
     public static void matchSingleRowExplain(Connection conn, String query, String expectedExplain, boolean isLocal) throws SQLException {
-        System.out.print("matchSingleRowExplain: EXPLAIN VIRTUAL " + query);
         ResultSet result = conn.createStatement().executeQuery("EXPLAIN VIRTUAL " + query);
-        System.out.println("... done!");
         result.next();
         if (isLocal) {
             assertEquals(expectedExplain, result.getString("PUSHDOWN_SQL"));

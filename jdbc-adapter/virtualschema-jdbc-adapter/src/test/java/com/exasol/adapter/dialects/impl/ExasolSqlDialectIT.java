@@ -64,17 +64,17 @@ public class ExasolSqlDialectIT extends AbstractIntegrationTest {
                 "ADAPTER.JDBC_ADAPTER",
                 connectionString, IS_LOCAL,
                 getConfig().debugAddress(),
-                "", "IMPORT_FROM_EXA='true'");
+                "", null);
         createVirtualSchema(
                 VIRTUAL_SCHEMA_MIXED_CASE,
                 ExasolSqlDialect.NAME,
                 "", TEST_SCHEMA_MIXED_CASE,
                 "CONN_EXASOL",
-"", "",
+                "", "",
                 "ADAPTER.JDBC_ADAPTER",
                 connectionString, IS_LOCAL,
                 getConfig().debugAddress(),
-                "", "IMPORT_FROM_EXA='true'");
+                "", null);
     }
 
     private static void createTestSchema() throws SQLException {
