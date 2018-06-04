@@ -54,7 +54,6 @@ public class JdbcAdapter {
         String result = "";
         try {
             AdapterRequest request = new RequestJsonParser().parseRequest(input);
-            tryAttachToOutputService(request.getSchemaMetadataInfo());
             System.out.println("----------\nAdapter Request:\n----------\n" + input);
             
             switch (request.getType()) {
@@ -317,20 +316,6 @@ public class JdbcAdapter {
             }
         }
         return DriverManager.getConnection(connectionString, info);
-    }
-
-    // Forward stdout to an external output service
-    private static void tryAttachToOutputService(SchemaMetadataInfo meta) throws AdapterException {
-        String debugAddress = JdbcAdapterProperties.getDebugAddress(meta.getProperties());
-        if (!debugAddress.isEmpty()) {
-            try {
-                String debugHost = debugAddress.split(":")[0];
-                int debugPort = Integer.parseInt(debugAddress.split(":")[1]);
-                UdfUtils.tryAttachToOutputService(debugHost, debugPort);
-            } catch (Exception ex) {
-                throw new AdapterException("You have to specify a valid hostname and port for the udf debug service, e.g. 'hostname:3000'");
-            }
-        }
     }
 
 }

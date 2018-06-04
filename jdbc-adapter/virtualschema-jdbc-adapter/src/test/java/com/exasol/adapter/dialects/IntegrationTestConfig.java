@@ -67,10 +67,6 @@ public class IntegrationTestConfig {
         return getProperty("general", "debug", false);
     }
 
-    public String debugAddress() {
-        return getProperty("general", "debugAddress", "");
-    }
-
     public boolean impalaTestsRequested() {
         return getProperty("impala", "runIntegrationTests", false);
     }

@@ -38,7 +38,6 @@ public class TeradataSqlDialectIT extends AbstractIntegrationTest {
                 "ADAPTER.JDBC_ADAPTER",
                 getConfig().getTeradataJdbcConnectionString(),
                 false,
-                getConfig().debugAddress(),
                 "numeric_data_types, REGION, DateTime_and_Interval_Data_Types, Period_Data_Types", null);
     }
 

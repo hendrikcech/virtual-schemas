@@ -67,7 +67,6 @@ public class OracleSqlDialectIT extends AbstractIntegrationTest {
                 "ADAPTER.JDBC_ORACLE",
                 getConfig().getOracleJdbcConnectionString(),
                 IS_LOCAL,
-                getConfig().debugAddress(),
                 TEST_TABLE,null);
 
         // create IMPORT FROM ORA virtual schema
@@ -83,7 +82,6 @@ public class OracleSqlDialectIT extends AbstractIntegrationTest {
                 "ADAPTER.JDBC_ORACLE",
                 getConfig().getOracleJdbcConnectionString(),
                 IS_LOCAL,
-                getConfig().debugAddress(),
                 TEST_TABLE,
                 "IMPORT_FROM_ORA='true' ORA_CONNECTION_NAME='CONN_ORACLE'");
     }

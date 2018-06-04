@@ -37,7 +37,6 @@ public class GenericSqlDialectIT extends AbstractIntegrationTest {
                 "ADAPTER.JDBC_ADAPTER",
                 connectionString,
                 IS_LOCAL,
-                getConfig().debugAddress(),
                 "", null);
     }
 

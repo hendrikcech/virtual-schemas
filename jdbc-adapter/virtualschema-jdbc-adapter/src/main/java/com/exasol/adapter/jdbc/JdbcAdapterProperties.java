@@ -25,7 +25,6 @@ public class JdbcAdapterProperties {
 
     // Optional Parameters
     static final String PROP_TABLES = "TABLE_FILTER";
-    static final String PROP_DEBUG_ADDRESS = "DEBUG_ADDRESS";
     static final String PROP_IS_LOCAL = "IS_LOCAL";
     static final String PROP_SQL_DIALECT = "SQL_DIALECT";
     static final String PROP_IMPORT_FROM_EXA = "IMPORT_FROM_EXA";
@@ -117,9 +116,6 @@ public class JdbcAdapterProperties {
         validateBooleanProperty(properties, PROP_IS_LOCAL);
         validateBooleanProperty(properties, PROP_IMPORT_FROM_EXA);
         validateBooleanProperty(properties, PROP_IMPORT_FROM_ORA);
-        if (properties.containsKey(PROP_DEBUG_ADDRESS)) {
-            validateDebugOutputAddress(properties.get(PROP_DEBUG_ADDRESS));
-        }
         if (properties.containsKey(PROP_EXCEPTION_HANDLING)) {
             validateExceptionHandling(properties.get(PROP_EXCEPTION_HANDLING));
         }
@@ -129,21 +125,6 @@ public class JdbcAdapterProperties {
         if (properties.containsKey(property)) {
             if (!properties.get(property).toUpperCase().matches("^TRUE$|^FALSE$")) {
                 throw new InvalidPropertyException("The value '" + properties.get(property) + "' for the property " + property + " is invalid. It has to be either 'true' or 'false' (case insensitive).");
-            }
-        }
-    }
-
-    private static void validateDebugOutputAddress(String debugAddress) throws AdapterException {
-        if (!debugAddress.isEmpty()) {
-            String error = "You specified an invalid hostname and port for the udf debug service (" + PROP_DEBUG_ADDRESS + "). Please provide a valid value, e.g. 'hostname:3000'";
-            try {
-                String debugHost = debugAddress.split(":")[0];
-                int debugPort = Integer.parseInt(debugAddress.split(":")[1]);
-            } catch (Exception ex) {
-                throw new AdapterException(error);
-            }
-            if (debugAddress.split(":").length != 2) {
-                throw new AdapterException(error);
             }
         }
     }
@@ -209,10 +190,6 @@ public class JdbcAdapterProperties {
 
     public static String getExcludedCapabilities(Map<String, String> properties) {
         return getProperty(properties, PROP_EXCLUDED_CAPABILITIES, "");
-    }
-
-    public static String getDebugAddress(Map<String, String> properties) {
-        return getProperty(properties, PROP_DEBUG_ADDRESS, "");
     }
 
     public static boolean isLocal(Map<String, String> properties) {

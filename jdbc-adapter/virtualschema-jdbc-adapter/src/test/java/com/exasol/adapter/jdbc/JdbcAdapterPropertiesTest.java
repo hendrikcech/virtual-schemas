@@ -85,40 +85,6 @@ public class JdbcAdapterPropertiesTest {
     }
 
     @Test
-    public void testInvalidDebugAddress1() throws AdapterException {
-        Map<String, String> properties = getMinimumMandatory();
-        properties.put(JdbcAdapterProperties.PROP_DEBUG_ADDRESS, "bla");
-        thrown.expect(AdapterException.class);
-        thrown.expectMessage("You specified an invalid hostname and port");
-        JdbcAdapterProperties.checkPropertyConsistency(properties, JdbcAdapter.supportedDialects);
-    }
-
-    @Test
-    public void testInvalidDebugAddress2() throws AdapterException {
-        Map<String, String> properties = getMinimumMandatory();
-        properties.put(JdbcAdapterProperties.PROP_DEBUG_ADDRESS, "bla:no-number");
-        thrown.expect(AdapterException.class);
-        thrown.expectMessage("You specified an invalid hostname and port");
-        JdbcAdapterProperties.checkPropertyConsistency(properties, JdbcAdapter.supportedDialects);
-    }
-
-    @Test
-    public void testInvalidDebugAddress3() throws AdapterException {
-        Map<String, String> properties = getMinimumMandatory();
-        properties.put(JdbcAdapterProperties.PROP_DEBUG_ADDRESS, "bla:123:456");
-        thrown.expect(AdapterException.class);
-        thrown.expectMessage("You specified an invalid hostname and port");
-        JdbcAdapterProperties.checkPropertyConsistency(properties, JdbcAdapter.supportedDialects);
-    }
-
-    @Test
-    public void testValidDebugAddress() throws AdapterException {
-        Map<String, String> properties = getMinimumMandatory();
-        properties.put(JdbcAdapterProperties.PROP_DEBUG_ADDRESS, "bla:123");
-        JdbcAdapterProperties.checkPropertyConsistency(properties, JdbcAdapter.supportedDialects);
-    }
-    
-    @Test
     public void testSchemaAndCatalogOptional() throws AdapterException {
         Map<String, String> properties = new HashMap<>();
         properties.put(JdbcAdapterProperties.PROP_SQL_DIALECT, "GENERIC");

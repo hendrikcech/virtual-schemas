@@ -41,7 +41,6 @@ public class DB2SqlDialectIT extends AbstractIntegrationTest {
                 "ADAPTER.JDBC_ADAPTER",
                 getConfig().getDB2JdbcConnectionString(),
                 IS_LOCAL,
-                getConfig().debugAddress(),
                 "",null);
     }
     

@@ -40,7 +40,6 @@ public class ImpalaSqlDialectIT extends AbstractIntegrationTest {
                 "ADAPTER.JDBC_ADAPTER",
                 getConfig().getImpalaJdbcConnectionString(),
                 IS_LOCAL,
-                getConfig().debugAddress(),
                 "SAMPLE_07,ALL_HIVE_IMPALA_TYPES,SIMPLE,SIMPLE_WITH_NULLS",null);
     }
 
