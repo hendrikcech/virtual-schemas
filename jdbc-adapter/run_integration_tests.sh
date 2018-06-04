@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
-# This script runs the integration tests for an Exasol virtual schema. Docker is
-# used to execute the Exasol container.
+# This script executes integration tests as defined in
+# ./integration-test-data/integration-test-travis.yaml (currently only Exasol
+# integration tests).
+
+# An Exasol instance is run using the exasol/docker-db image. Therefore, a
+# working installation of Docker and sudo privileges are required.
 
 location="$(dirname "$0")"
 config="$location/integration-test-data/integration-test-travis.yaml"
