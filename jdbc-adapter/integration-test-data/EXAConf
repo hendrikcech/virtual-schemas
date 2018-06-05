@@ -118,7 +118,7 @@
         # ReadPasswd is "read" (without quotes)
         ReadPasswd = cmVhZAo=
         # WritePasswd is "write" (without quotes)
-        WritePasswd = d3JpdGUK
+        WritePasswd = d3JpdGU=
         Public = True
         Name = default
         AdditionalFiles = EXAClusterOS:/usr/opt/EXASuite-6/EXAClusterOS-6.0.8/var/clients/packages/ScriptLanguages-*, EXASolution-6.0.8:/usr/opt/EXASuite-6/EXASolution-6.0.8/bin/udf/*
