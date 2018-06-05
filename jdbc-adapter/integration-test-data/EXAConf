@@ -1,6 +1,6 @@
 [Global]
     Revision = 7
-    Checksum = 837ac5784b82dfc64132e2e4cde0a87f
+    Checksum = NONE
     ClusterName = cl4
     Platform = Docker
     LicenseFile = /exa/etc/license.xml

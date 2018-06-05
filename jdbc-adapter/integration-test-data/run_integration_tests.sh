@@ -7,12 +7,20 @@
 # An Exasol instance is run using the exasol/docker-db image. Therefore, a
 # working installation of Docker and sudo privileges are required.
 
-cd "$(dirname "$0")"
+set -eu
 
-config="$(pwd)/integration-test-travis.yaml"
+cd "$(dirname "$0")/.."
 
-mkdir -p exa/etc
-cp EXAConf exa/etc/EXAConf
+config="$(pwd)/integration-test-data/integration-test-travis.yaml"
+
+function cleanup() {
+    docker rm -f exasoldb || true
+    sudo rm -rf integration-test-data/exa || true
+}
+trap cleanup EXIT
+
+mkdir -p integration-test-data/exa/etc
+cp integration-test-data/EXAConf integration-test-data/exa/etc/EXAConf
 
 docker pull exasol/docker-db:latest
 docker run --name exasoldb \
@@ -20,7 +28,7 @@ docker run --name exasoldb \
     -p 6583:6583 \
     --detach \
     --privileged \
-    --volume $(pwd)/exa:/exa \
+    --volume "$(pwd)/exa:/exa" \
     exasol/docker-db:latest
 
 mvn clean package
