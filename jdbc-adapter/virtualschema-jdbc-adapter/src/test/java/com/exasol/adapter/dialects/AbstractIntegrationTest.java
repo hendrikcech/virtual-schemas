@@ -68,7 +68,6 @@ public class AbstractIntegrationTest {
         Statement stmt = conn.createStatement();
         stmt.execute("CREATE SCHEMA IF NOT EXISTS ADAPTER");
         String sql = "CREATE OR REPLACE JAVA ADAPTER SCRIPT ADAPTER.JDBC_ADAPTER AS\n" +
-                "  %env JAVA_TOOL_OPTIONS=\"-Djava.security.egd=file:/dev/./urandom\";\n" +
                 "  %scriptclass com.exasol.adapter.jdbc.JdbcAdapter;\n";
         for (String includePath : jarIncludes) {
             sql += "  %jar " + includePath + ";\n";
