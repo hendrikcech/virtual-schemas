@@ -21,7 +21,7 @@ trap cleanup EXIT
 
 mkdir -p integration-test-data/exa/{etc,data/storage}
 cp integration-test-data/EXAConf integration-test-data/exa/etc/EXAConf
-dd if=/dev/zero of=integration-test-data/exa/data/storage/dev.1.data bs=1 count=0 seek=4G
+dd if=/dev/zero of=integration-test-data/exa/data/storage/dev.1.data bs=1 count=1 seek=4G
 touch integration-test-data/exa/data/storage/dev.1.meta
 
 docker pull exasol/docker-db:latest
