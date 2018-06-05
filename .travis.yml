@@ -11,4 +11,4 @@ matrix:
   include:
     - jdk: "oraclejdk8"
 
-script: ./jdbc-adapter/run_integration_tests.sh
+script: ./jdbc-adapter/integration-test-data/run_integration_tests.sh
