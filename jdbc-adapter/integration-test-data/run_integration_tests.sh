@@ -19,8 +19,10 @@ function cleanup() {
 }
 trap cleanup EXIT
 
-mkdir -p integration-test-data/exa/etc
+mkdir -p integration-test-data/exa/{etc,data/storage}
 cp integration-test-data/EXAConf integration-test-data/exa/etc/EXAConf
+dd if=/dev/zero of=integration-test-data/exa/data/storage/dev.1.data bs=1M count=1 seek=999
+touch integration-test-data-/exa/data/storage/dev.1.meta
 
 docker pull exasol/docker-db:latest
 docker run --name exasoldb \
@@ -28,8 +30,16 @@ docker run --name exasoldb \
     -p 6583:6583 \
     --detach \
     --privileged \
-    --volume "$(pwd)/exa:/exa" \
-    exasol/docker-db:latest
+    -v $(pwd)/exa:/exa \
+    exasol/docker-db:latest \
+    init-sc \
+    --node-id 11
+
+docker logs -f exasoldb &
+
+sleep 120
+
+docker exec exasoldb sh -c 'ls /exa/etc; cat /exa/etc/EXAConf'
 
 mvn clean package
 
