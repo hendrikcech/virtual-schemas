@@ -20,7 +20,7 @@ docker run --name exasoldb \
     -p 6583:6583 \
     --detach \
     --privileged \
-    --volume $(pwd)/exa:/exa
+    --volume $(pwd)/exa:/exa \
     exasol/docker-db:latest
 
 mvn clean package
