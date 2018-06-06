@@ -9,13 +9,12 @@
 
 set -eux
 
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")"
 
 config="$(pwd)/integration-test-data/integration-test-travis.yaml"
 
 function cleanup() {
     docker rm -f exasoldb || true
-    sudo rm -rf integration-test-data/exa || true
 }
 trap cleanup EXIT
 
