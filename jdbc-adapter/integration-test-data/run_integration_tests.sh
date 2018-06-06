@@ -32,19 +32,17 @@ docker logs -f exasoldb &
 (docker logs -f --tail 0 exasoldb &) 2>&1 | grep -q -i 'stage4: All stages finished'
 sleep 30
 
-alias exax=docker exec exasoldb
+docker exec exasoldb dwad_client stop-wait DB1
 
-exax dwad_client stop-wait DB1
+docker exec exasoldb sed -i -e '/Checksum/c\    Checksum = COMMIT' /exa/etc/EXAConf
+docker exec exasoldb sed -i -e '/WritePasswd/c\        WritePasswd = d3JpdGU=' /exa/etc/EXAConf
+docker exec exasoldb sed -i -e '/Params/c\    Params = -etlJdbcJavaEnv -Djava.security.egd=/dev/./urandom' /exa/etc/EXAConf
 
-exax sed -i -e '/Checksum/c\    Checksum = COMMIT' /exa/etc/EXAConf
-exax sed -i -e '/WritePasswd/c\        WritePasswd = d3JpdGU=' /exa/etc/EXAConf
-exax sed -i -e '/Params/c\    Params = -etlJdbcJavaEnv -Djava.security.egd=/dev/./urandom' /exa/etc/EXAConf
+docker exec exasoldb cat /exa/etc/EXAConf
 
-exax cat /exa/etc/EXAConf
+docker exec exasoldb dwad_client start-wait DB1
 
-exax dwad_client start-wait DB1
-
-exax cat /exa/etc/EXAConf
+docker exec exasoldb cat /exa/etc/EXAConf
 
 mvn clean package
 
