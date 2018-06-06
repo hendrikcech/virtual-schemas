@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 # This script executes integration tests as defined in
-# ./integration-test-data/integration-test-travis.yaml (currently only Exasol
-# integration tests).
+# jdbc-adapter/integration-test-data/integration-test-travis.yaml (currently
+# only Exasol integration tests are run).
 
-# An Exasol instance is run using the exasol/docker-db image. Therefore, a
-# working installation of Docker and sudo privileges are required.
+# An Exasol instance is provided by the exasol/docker-db image. A working
+# installation of Docker and sudo privileges on the host are required.
 
 set -eux
 
@@ -36,8 +36,6 @@ docker run --name exasoldb \
     --privileged \
     exasol/docker-db:latest
 
-# docker logs -f exasoldb &
-
 await_startup
 
 exax dwad_client stop-wait DB1
@@ -55,16 +53,8 @@ docker start exasoldb
 
 await_startup
 
-# exax cat /exa/etc/EXAConf
-
 # Setup finish: Start actual tests
-
 mvn clean package
-
-# Wait for exaudfclient to be extracted and available
-# while [ $(exax find /exa/data/bucketfs/bfsdefault/.dest -name exaudfclient -printf '.' | wc -c) -lt 1 ]; do
-#     sleep 1
-# done
 
 # Upload virtualschema-jdbc-adapter jar and wait a bit to make sure it's available
 mvn pre-integration-test -DskipTests -Pit -Dintegrationtest.configfile="$config"
