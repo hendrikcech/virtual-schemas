@@ -7,7 +7,7 @@
 # An Exasol instance is run using the exasol/docker-db image. Therefore, a
 # working installation of Docker and sudo privileges are required.
 
-set -eu
+set -eux
 
 cd "$(dirname "$0")/.."
 
