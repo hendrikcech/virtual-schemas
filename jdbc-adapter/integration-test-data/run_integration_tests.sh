@@ -38,9 +38,12 @@ docker exec exasoldb sed -i -e '/Checksum/c\    Checksum = COMMIT' /exa/etc/EXAC
 docker exec exasoldb sed -i -e '/WritePasswd/c\        WritePasswd = d3JpdGU=' /exa/etc/EXAConf
 docker exec exasoldb sed -i -e '/Params/c\    Params = -etlJdbcJavaEnv -Djava.security.egd=/dev/./urandom' /exa/etc/EXAConf
 
-docker exec exasoldb cat /exa/etc/EXAConf
+docker exec exasoldb sh -c 'rm /exa/etc/EXAConf.*'
 
-docker exec exasoldb dwad_client start-wait DB1
+docker stop exasoldb
+docker start exasoldb
+(docker logs -f --tail 0 exasoldb &) 2>&1 | grep -q -i 'stage4: All stages finished'
+sleep 30
 
 docker exec exasoldb cat /exa/etc/EXAConf
 
