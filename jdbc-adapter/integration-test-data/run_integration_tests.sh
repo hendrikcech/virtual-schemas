@@ -17,12 +17,7 @@ function cleanup() {
     docker rm -f exasoldb || true
     sudo rm -rf integration-test-data/exa || true
 }
-trap cleanup EXIT
-
-mkdir -p integration-test-data/exa/{etc,data/storage}
-cp integration-test-data/EXAConf integration-test-data/exa/etc/EXAConf
-dd if=/dev/zero of=integration-test-data/exa/data/storage/dev.1.data bs=1 count=1 seek=4G
-touch integration-test-data/exa/data/storage/dev.1.meta
+# trap cleanup EXIT
 
 docker pull exasol/docker-db:latest
 docker run --name exasoldb \
@@ -30,16 +25,26 @@ docker run --name exasoldb \
     -p 6594:6583 \
     --detach \
     --privileged \
-    -v $(pwd)/integration-test-data/exa:/exa \
-    exasol/docker-db:latest \
-    init-sc \
-    --node-id 11
+    exasol/docker-db:latest
 
 docker logs -f exasoldb &
 
-sleep 120
+(docker logs -f --tail 0 exasoldb &) 2>&1 | grep -q -i 'stage4: All stages finished'
+sleep 30
 
-docker exec exasoldb sh -c 'ls /exa/etc; cat /exa/etc/EXAConf'
+alias exax=docker exec exasoldb
+
+exax dwad_client stop-wait DB1
+
+exax sed -i -e '/Checksum/c\    Checksum = COMMIT' /exa/etc/EXAConf
+exax sed -i -e '/WritePasswd/c\        WritePasswd = d3JpdGU=' /exa/etc/EXAConf
+exax sed -i -e '/Params/c\    Params = -etlJdbcJavaEnv -Djava.security.egd=/dev/./urandom' /exa/etc/EXAConf
+
+exax cat /exa/etc/EXAConf
+
+exax dwad_client start-wait DB1
+
+exax cat /exa/etc/EXAConf
 
 mvn clean package
 
