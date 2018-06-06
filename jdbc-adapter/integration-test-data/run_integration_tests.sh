@@ -17,7 +17,17 @@ function cleanup() {
     docker rm -f exasoldb || true
     sudo rm -rf integration-test-data/exa || true
 }
-# trap cleanup EXIT
+trap cleanup EXIT
+
+function await_startup() {
+    # Wait for database to have finished startup procedures
+    (docker logs -f --tail 0 exasoldb &) 2>&1 | grep -q -i 'stage4: All stages finished'
+    sleep 30
+}
+
+function exax() {
+    docker exec exasoldb "$@"
+}
 
 docker pull exasol/docker-db:latest
 docker run --name exasoldb \
@@ -27,36 +37,38 @@ docker run --name exasoldb \
     --privileged \
     exasol/docker-db:latest
 
-docker logs -f exasoldb &
+# docker logs -f exasoldb &
 
-(docker logs -f --tail 0 exasoldb &) 2>&1 | grep -q -i 'stage4: All stages finished'
-sleep 30
+await_startup
 
-docker exec exasoldb dwad_client stop-wait DB1
+exax dwad_client stop-wait DB1
 
-docker exec exasoldb sed -i -e '/Checksum/c\    Checksum = COMMIT' /exa/etc/EXAConf
-docker exec exasoldb sed -i -e '/WritePasswd/c\        WritePasswd = d3JpdGU=' /exa/etc/EXAConf
-docker exec exasoldb sed -i -e '/Params/c\    Params = -etlJdbcJavaEnv -Djava.security.egd=/dev/./urandom' /exa/etc/EXAConf
+exax sed -i -e '/Checksum/c\    Checksum = COMMIT' \
+            -e '/WritePasswd/c\        WritePasswd = d3JpdGU=' \
+            -e '/Params/c\    Params = -etlJdbcJavaEnv -Djava.security.egd=/dev/./urandom' \
+    /exa/etc/EXAConf
 
-docker exec exasoldb sh -c 'rm /exa/etc/EXAConf.*'
 
+# Remove all copies of EXAConf and restart container to make sure that new settings are applied
+exax sh -c 'rm /exa/etc/EXAConf.*'
 docker stop exasoldb
 docker start exasoldb
-(docker logs -f --tail 0 exasoldb &) 2>&1 | grep -q -i 'stage4: All stages finished'
-sleep 30
 
-docker exec exasoldb cat /exa/etc/EXAConf
+await_startup
+
+# exax cat /exa/etc/EXAConf
+
+# Setup finish: Start actual tests
 
 mvn clean package
 
 # Wait for exaudfclient to be extracted and available
-while [ $(docker exec exasoldb find /exa/data/bucketfs/bfsdefault/.dest -name exaudfclient -printf '.' | wc -c) -lt 1 ]; do
-    sleep 1
-done
+# while [ $(exax find /exa/data/bucketfs/bfsdefault/.dest -name exaudfclient -printf '.' | wc -c) -lt 1 ]; do
+#     sleep 1
+# done
 
 # Upload virtualschema-jdbc-adapter jar and wait a bit to make sure it's available
 mvn pre-integration-test -DskipTests -Pit -Dintegrationtest.configfile="$config"
-
 sleep 60
 
 mvn verify -Pit -Dintegrationtest.configfile="$config"
