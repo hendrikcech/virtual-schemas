@@ -3,7 +3,7 @@
 general:
   debug:            false
   debugAddress:     ''
-  bucketFsUrl:      http://127.0.0.1:6583/default
+  bucketFsUrl:      http://127.0.0.1:6594/default
   # The bucketFsPassword placeholder will be automatically replaced by the
   # integration test script. Do not modify the value!
   bucketFsPassword: write
@@ -11,7 +11,7 @@ general:
 
 exasol:
   runIntegrationTests: true
-  address:  127.0.0.1:8888
+  address:  127.0.0.1:8899
   user:     sys
   password: exasol
 

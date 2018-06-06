@@ -26,8 +26,8 @@ touch integration-test-data/exa/data/storage/dev.1.meta
 
 docker pull exasol/docker-db:latest
 docker run --name exasoldb \
-    -p 8888:8888 \
-    -p 6583:6583 \
+    -p 8899:8888 \
+    -p 6594:6583 \
     --detach \
     --privileged \
     -v $(pwd)/integration-test-data/exa:/exa \
@@ -50,6 +50,7 @@ done
 
 # Upload virtualschema-jdbc-adapter jar and wait a bit to make sure it's available
 mvn pre-integration-test -DskipTests -Pit -Dintegrationtest.configfile="$config"
+
 sleep 60
 
 mvn verify -Pit -Dintegrationtest.configfile="$config"
