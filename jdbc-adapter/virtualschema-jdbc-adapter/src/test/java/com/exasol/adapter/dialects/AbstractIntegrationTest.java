@@ -67,8 +67,8 @@ public class AbstractIntegrationTest {
     public static void createJDBCAdapter(Connection conn, List<String> jarIncludes) throws SQLException {
         Statement stmt = conn.createStatement();
         stmt.execute("CREATE SCHEMA IF NOT EXISTS ADAPTER");
-        String sql = "CREATE OR REPLACE JAVA ADAPTER SCRIPT ADAPTER.JDBC_ADAPTER AS\n" +
-                "  %scriptclass com.exasol.adapter.jdbc.JdbcAdapter;\n";
+        String sql = "CREATE OR REPLACE JAVA ADAPTER SCRIPT ADAPTER.JDBC_ADAPTER AS\n";
+        sql += "  %scriptclass com.exasol.adapter.jdbc.JdbcAdapter;\n";
         for (String includePath : jarIncludes) {
             sql += "  %jar " + includePath + ";\n";
         }

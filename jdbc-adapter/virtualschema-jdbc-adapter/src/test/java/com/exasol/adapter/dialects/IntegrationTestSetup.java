@@ -24,7 +24,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
  */
 public class IntegrationTestSetup {
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
 
         System.out.println("Start setup of the integration test environment");
         String projectVersion = args[0];
@@ -45,18 +45,18 @@ public class IntegrationTestSetup {
      
         
         uploadFileToBucketFS(bucketFSurl+"/"+jarName, jarLocalPath, bucketFSpassword);
-
+        
         //uploadFileToBucketFS("http://192.168.106.131:2580/bucket1/original-virtualschema-jdbc-adapter-dist-1.0.1-SNAPSHOT.jar", "C:\\Users\\tb\\Desktop\\github-repos\\virtual-schemas\\jdbc-adapter\\virtualschema-jdbc-adapter-dist\\target\\original-virtualschema-jdbc-adapter-dist-1.0.1-SNAPSHOT.jar","bucket1");
                    
     }
 
   
     private static void uploadFileToBucketFS(String url, String filePath, String password) throws ClientProtocolException, IOException, URISyntaxException {
-
+    	
     	HttpClient httpClient = HttpClientBuilder.create().build();
         URIBuilder uriBuilder = new URIBuilder(url);
         HttpPut request = new HttpPut(uriBuilder.build());
-
+                
         String auth = "w:"+password;
         byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("UTF-8")));
         String authHeader = "Basic " + new String(encodedAuth);

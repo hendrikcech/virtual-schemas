@@ -65,7 +65,7 @@ public class ExasolSqlDialectIT extends AbstractIntegrationTest {
                 "ADAPTER.JDBC_ADAPTER",
                 connectionString, IS_LOCAL,
                 getConfig().debugAddress(),
-                "", null);
+                "",null);
     }
 
     private static void createTestSchema() throws SQLException {
