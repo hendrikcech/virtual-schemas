@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # This script executes integration tests as defined in
-# ./integration-test-data/integration-test-travis.yaml (currently only Exasol
-# integration tests).
+# integration-test-travis.yaml (currently only Exasol integration tests).
 
 # An Exasol instance is run using the exasol/docker-db image. Therefore, a
 # working installation of Docker and sudo privileges are required.
@@ -19,6 +18,7 @@ function cleanup() {
 }
 trap cleanup EXIT
 
+# Setup directory "exa" with pre-configured EXAConf to attach it to the exasoldb docker container
 mkdir -p integration-test-data/exa/{etc,data/storage}
 cp integration-test-data/EXAConf integration-test-data/exa/etc/EXAConf
 dd if=/dev/zero of=integration-test-data/exa/data/storage/dev.1.data bs=1 count=1 seek=4G
@@ -37,15 +37,11 @@ docker run \
 
 docker logs -f exasoldb &
 
+# Wait until database is ready
 (docker logs -f --tail 0 exasoldb &) 2>&1 | grep -q -i 'stage4: All stages finished'
 sleep 30
 
 mvn clean package
-
-# Wait for exaudfclient to be extracted and available
-while [ $(docker exec exasoldb find /exa/data/bucketfs/bfsdefault/.dest -name exaudfclient -printf '.' | wc -c) -lt 1 ]; do
-    sleep 1
-done
 
 # Upload virtualschema-jdbc-adapter jar and wait a bit to make sure it's available
 mvn pre-integration-test -DskipTests -Pit -Dintegrationtest.configfile="$config"
