@@ -28,7 +28,7 @@
     # (except for mapped devices)
     RootDir = /exa/etc
     # The EXASOL docker image used for all containers of this cluster
-    Image = exasol/docker-db:latest
+    Image = exasol/docker-db:6.0.10-d1
     # The type of storage devices for this cluster: 'block' or 'file'
     DeviceType = file
 
@@ -72,7 +72,7 @@
     DataVolume = DataVolume1
     ArchiveVolume = 
     # The EXASOL version to be used for this database
-    Version = 6.0.8
+    Version = 6.0.10
     # User and group ID that should own this database
     Owner = 500 : 500
     # Memory size over all nodes (e. g. '1 TiB')

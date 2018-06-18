@@ -40,8 +40,6 @@ docker logs -f exasoldb &
 (docker logs -f --tail 0 exasoldb &) 2>&1 | grep -q -i 'stage4: All stages finished'
 sleep 30
 
-docker exec exasoldb sh -c 'ls /exa/etc; cat /exa/etc/EXAConf'
-
 mvn clean package
 
 # Wait for exaudfclient to be extracted and available
@@ -51,7 +49,6 @@ done
 
 # Upload virtualschema-jdbc-adapter jar and wait a bit to make sure it's available
 mvn pre-integration-test -DskipTests -Pit -Dintegrationtest.configfile="$config"
-
 sleep 60
 
 mvn verify -Pit -Dintegrationtest.configfile="$config"
