@@ -26,7 +26,7 @@ touch integration-test-data/exa/data/storage/dev.1.meta
 
 docker pull exasol/docker-db:6.0.10-d1
 docker run \
-    --name exasoldb
+    --name exasoldb \
     -p 8899:8888 \
     -p 6594:6583 \
     --detach \
