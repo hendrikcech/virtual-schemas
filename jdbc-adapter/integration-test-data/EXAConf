@@ -9,7 +9,7 @@
     # The type of networks for this cluster: 'public', 'private' or both.
     Networks = private
     # Comma-separated list of nameservers for this cluster.
-    NameServers = 
+    NameServers =
     ConfVersion = 6.0.10
     OSVersion = 6.0.10
     DBVersion = 6.0.10
@@ -34,7 +34,7 @@
 
 [Node : 11]
     PrivateNet = 172.17.0.2/16
-    PublicNet = 
+    PublicNet =
     Name = n11
     UUID = 5D11CDFCDEA74475833F1892426428873D4BEB66
     DockerVolume = n11
@@ -47,7 +47,7 @@
 # Global EXAStorage options
 [EXAStorage]
     # Max. throughput for background recovery / data restoration (in MiB/s)
-    RecLimit = 
+    RecLimit =
 
 # An EXAStorage data volume
 [EXAVolume : DataVolume1]
@@ -65,12 +65,12 @@
     # Volume owner (user and group ID)
     Owner = 500 : 500
     # OPTIONAL: a comma-separated list of labels for this volume
-    Labels = 
+    Labels =
 
 # An EXASOL database
 [DB : DB1]
     DataVolume = DataVolume1
-    ArchiveVolume = 
+    ArchiveVolume =
     # The EXASOL version to be used for this database
     Version = 6.0.10
     # User and group ID that should own this database
@@ -112,7 +112,7 @@
     HttpsPort = 0
     SyncKey = OHNNMEJTV09aeEFyajhjYVBnTmtsQ0E2MjhWMDRlYzI=
     SyncPeriod = 30000
-    
+
     # A bucket
     [[Bucket : default]]
         # ReadPasswd is "read" (without quotes)
