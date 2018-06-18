@@ -24,20 +24,21 @@ cp integration-test-data/EXAConf integration-test-data/exa/etc/EXAConf
 dd if=/dev/zero of=integration-test-data/exa/data/storage/dev.1.data bs=1 count=1 seek=4G
 touch integration-test-data/exa/data/storage/dev.1.meta
 
-docker pull exasol/docker-db:latest
-docker run --name exasoldb \
+docker pull exasol/docker-db:6.0.10-d1
+docker run \
+    --name exasoldb
     -p 8899:8888 \
     -p 6594:6583 \
     --detach \
     --privileged \
-    -v $(pwd)/integration-test-data/exa:/exa \
+    -v "$(pwd)/integration-test-data/exa:/exa" \
     exasol/docker-db:latest \
-    init-sc \
-    --node-id 11
+    init-sc --node-id 11
 
 docker logs -f exasoldb &
 
-sleep 120
+(docker logs -f --tail 0 exasoldb &) 2>&1 | grep -q -i 'stage4: All stages finished'
+sleep 30
 
 docker exec exasoldb sh -c 'ls /exa/etc; cat /exa/etc/EXAConf'
 
