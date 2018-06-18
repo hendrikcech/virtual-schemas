@@ -1,5 +1,5 @@
 [Global]
-    Revision = 7
+    Revision = 11
     Checksum = NONE
     ClusterName = cl4
     Platform = Docker
@@ -10,10 +10,10 @@
     Networks = private
     # Comma-separated list of nameservers for this cluster.
     NameServers = 
-    ConfVersion = 6.0.8
-    OSVersion = 6.0.8
-    DBVersion = 6.0.8
-    ImageVersion = 6.0.8-d1
+    ConfVersion = 6.0.10
+    OSVersion = 6.0.10
+    DBVersion = 6.0.10
+    ImageVersion = 6.0.10-d1
 
 # SSL options
 [SSL]
@@ -59,7 +59,7 @@
     # This disk must exist on all volume nodes.
     Disk = default
     # Volume size (e. g. '1 TiB')
-    Size = 3.9 GiB
+    Size = 2.0 GiB
     # Desired redundancy for this volume
     Redundancy = 1
     # Volume owner (user and group ID)
@@ -121,4 +121,4 @@
         WritePasswd = d3JpdGU=
         Public = True
         Name = default
-        AdditionalFiles = EXAClusterOS:/usr/opt/EXASuite-6/EXAClusterOS-6.0.8/var/clients/packages/ScriptLanguages-*, EXASolution-6.0.8:/usr/opt/EXASuite-6/EXASolution-6.0.8/bin/udf/*
+        AdditionalFiles = EXAClusterOS:/usr/opt/EXASuite-6/EXAClusterOS-6.0.10/var/clients/packages/ScriptLanguages-*, EXASolution-6.0.10:/usr/opt/EXASuite-6/EXASolution-6.0.10/bin/udf/*
