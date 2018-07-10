@@ -44,29 +44,9 @@ sleep 30
 
 mvn -q clean package
 
-# Upload virtualschema-jdbc-adapter jar and wait a bit to make sure it's available
-# If tests fail with the following error message, try waiting longer:
-# '/buckets/bfsdefault/default/virtualschema-jdbc-adapter-dist-1.0.1-SNAPSHOT.jar':
-# No such file or directory (Session: 1605583229540089387)
+# Load virtualschema-jdbc-adapter jar into BucketFS and wait until it's available.
 mvn -q pre-integration-test -DskipTests -Pit -Dintegrationtest.configfile="$config"
-# sleep 30
-
-# linked=0
-# while [ $linked -eq 0 ]; do
-#     docker exec exasoldb grep -r -i 'File.*virtualschema-jdbc-adapter.*linked' /exa/logs/cored
-#     linked=$(docker exec exasoldb grep -r -i 'File.*virtualschema-jdbc-adapter.*linked' /exa/logs/cored | wc -l)
-#     sleep 5
-# done
-
-docker exec exasoldb ls /exa/logs/cored
-
-# (docker exec exasoldb find /exa/logs/cored -iname '*bucket*' -print0 | \
-#      xargs -0 -I {} \
-#            docker exec exasoldb tail -f -n +0 {} &) | \
-#     grep -q -i 'File.*virtualschema-jdbc-adapter.*linked'
 (docker exec exasoldb sh -c 'tail -f -n +0 /exa/logs/cored/*bucket*' &) | \
     grep -q -i 'File.*virtualschema-jdbc-adapter.*linked'
-
-docker exec exasoldb sh -c 'cat /exa/logs/cored/*bucket*'
 
 mvn -q verify -Pit -Dintegrationtest.configfile="$config" -Dintegrationtest.skipTestSetup=true
