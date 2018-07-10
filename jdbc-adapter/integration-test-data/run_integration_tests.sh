@@ -24,8 +24,7 @@ cp integration-test-data/EXAConf integration-test-data/exa/etc/EXAConf
 dd if=/dev/zero of=integration-test-data/exa/data/storage/dev.1.data bs=1 count=1 seek=4G
 touch integration-test-data/exa/data/storage/dev.1.meta
 
-# TODO use image `latest`
-docker pull exasol/docker-db:6.0.10-d1
+docker pull exasol/docker-db:latest
 docker run \
     --name exasoldb \
     -p 8899:8888 \
