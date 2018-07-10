@@ -48,6 +48,6 @@ mvn -q clean package
 # '/buckets/bfsdefault/default/virtualschema-jdbc-adapter-dist-1.0.1-SNAPSHOT.jar':
 # No such file or directory (Session: 1605583229540089387)
 mvn -q pre-integration-test -DskipTests -Pit -Dintegrationtest.configfile="$config"
-sleep 120
+sleep 30
 
-mvn -q verify -Pit -Dintegrationtest.configfile="$config"
+mvn -q verify -Pit -Dintegrationtest.configfile="$config" -Dintegrationtest.uploadJar=false
