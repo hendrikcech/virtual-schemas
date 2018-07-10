@@ -48,6 +48,13 @@ mvn -q clean package
 # '/buckets/bfsdefault/default/virtualschema-jdbc-adapter-dist-1.0.1-SNAPSHOT.jar':
 # No such file or directory (Session: 1605583229540089387)
 mvn -q pre-integration-test -DskipTests -Pit -Dintegrationtest.configfile="$config"
-sleep 30
+# sleep 30
+
+linked=0
+while [ $linked -eq 0 ] ; do
+    docker exec exasoldb grep -r -i 'File.*virtualschema-jdbc-adapter.*linked' /exa/logs/cored
+    linked=$(docker exec exasoldb grep -r -i 'File.*virtualschema-jdbc-adapter.*linked' /exa/logs/cored | wc -l)
+    sleep 5
+done
 
 mvn -q verify -Pit -Dintegrationtest.configfile="$config" -Dintegrationtest.uploadJar=false

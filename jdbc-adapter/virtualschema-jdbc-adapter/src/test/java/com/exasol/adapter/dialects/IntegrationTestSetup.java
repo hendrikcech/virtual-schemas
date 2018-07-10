@@ -29,8 +29,8 @@ public class IntegrationTestSetup {
         System.out.println("Start setup of the integration test environment");
         String projectVersion = args[0];
         String configFile = args[1];
-        Boolean uploadJar = Boolean.valueOf(args[2]);
 
+        Boolean uploadJar = Boolean.valueOf(args[2]);
         if (!uploadJar) {
           return;
         }
