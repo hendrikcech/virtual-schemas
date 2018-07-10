@@ -45,6 +45,6 @@ mvn -q clean package
 
 # Upload virtualschema-jdbc-adapter jar and wait a bit to make sure it's available
 mvn -q pre-integration-test -DskipTests -Pit -Dintegrationtest.configfile="$config"
-sleep 60
+sleep 120
 
 mvn -q verify -Pit -Dintegrationtest.configfile="$config"
