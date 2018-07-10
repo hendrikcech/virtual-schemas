@@ -24,6 +24,7 @@ cp integration-test-data/EXAConf integration-test-data/exa/etc/EXAConf
 dd if=/dev/zero of=integration-test-data/exa/data/storage/dev.1.data bs=1 count=1 seek=4G
 touch integration-test-data/exa/data/storage/dev.1.meta
 
+# TODO use image `latest`
 docker pull exasol/docker-db:6.0.10-d1
 docker run \
     --name exasoldb \
@@ -50,11 +51,22 @@ mvn -q clean package
 mvn -q pre-integration-test -DskipTests -Pit -Dintegrationtest.configfile="$config"
 # sleep 30
 
-linked=0
-while [ $linked -eq 0 ] ; do
-    docker exec exasoldb grep -r -i 'File.*virtualschema-jdbc-adapter.*linked' /exa/logs/cored
-    linked=$(docker exec exasoldb grep -r -i 'File.*virtualschema-jdbc-adapter.*linked' /exa/logs/cored | wc -l)
-    sleep 5
-done
+# linked=0
+# while [ $linked -eq 0 ]; do
+#     docker exec exasoldb grep -r -i 'File.*virtualschema-jdbc-adapter.*linked' /exa/logs/cored
+#     linked=$(docker exec exasoldb grep -r -i 'File.*virtualschema-jdbc-adapter.*linked' /exa/logs/cored | wc -l)
+#     sleep 5
+# done
 
-mvn -q verify -Pit -Dintegrationtest.configfile="$config" -Dintegrationtest.uploadJar=false
+docker exec exasoldb ls /exa/logs/cored
+
+# (docker exec exasoldb find /exa/logs/cored -iname '*bucket*' -print0 | \
+#      xargs -0 -I {} \
+#            docker exec exasoldb tail -f -n +0 {} &) | \
+#     grep -q -i 'File.*virtualschema-jdbc-adapter.*linked'
+(docker exec exasoldb sh -c 'tail -f -n +0 /exa/logs/cored/*bucket*' &) | \
+    grep -q -i 'File.*virtualschema-jdbc-adapter.*linked'
+
+docker exec exasoldb sh -c 'cat /exa/logs/cored/*bucket*'
+
+mvn -q verify -Pit -Dintegrationtest.configfile="$config" -Dintegrationtest.skipTestSetup=true

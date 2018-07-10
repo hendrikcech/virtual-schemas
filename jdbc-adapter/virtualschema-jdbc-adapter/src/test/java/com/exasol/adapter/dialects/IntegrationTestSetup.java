@@ -30,9 +30,11 @@ public class IntegrationTestSetup {
         String projectVersion = args[0];
         String configFile = args[1];
 
-        Boolean uploadJar = Boolean.valueOf(args[2]);
-        if (!uploadJar) {
-          return;
+        if (args.length > 2) {
+          Boolean skipTestSetup = Boolean.valueOf(args[2]);
+          if (skipTestSetup) {
+            return;
+          }
         }
 
         IntegrationTestConfig config = new IntegrationTestConfig(configFile);
