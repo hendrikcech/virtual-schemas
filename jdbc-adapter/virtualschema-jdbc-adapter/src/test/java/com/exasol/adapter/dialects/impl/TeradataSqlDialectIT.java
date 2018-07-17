@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class TeradataSqlDialectIT extends AbstractIntegrationTest {
                 getConfig().getTeradataJdbcConnectionString(),
                 false,
                 getConfig().debugAddress(),
-                "numeric_data_types, REGION, DateTime_and_Interval_Data_Types, Period_Data_Types", null);
+                "numeric_data_types, REGION, DateTime_and_Interval_Data_Types, Period_Data_Types");
     }
 
 //    @Test

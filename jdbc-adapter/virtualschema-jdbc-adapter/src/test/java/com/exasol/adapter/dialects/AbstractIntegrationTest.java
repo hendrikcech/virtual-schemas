@@ -60,17 +60,13 @@ public class AbstractIntegrationTest {
         return executeQuery(connection, query);
     }
 
-    public int executeUpdate(String query) throws SQLException {
-        checkConnection();
-        return connection.createStatement().executeUpdate(query);
-    }
     public static void createJDBCAdapter(Connection conn, List<String> jarIncludes) throws SQLException {
         Statement stmt = conn.createStatement();
         stmt.execute("CREATE SCHEMA IF NOT EXISTS ADAPTER");
         String sql = "CREATE OR REPLACE JAVA ADAPTER SCRIPT ADAPTER.JDBC_ADAPTER AS\n";
-        sql += "  %scriptclass com.exasol.adapter.jdbc.JdbcAdapter;\n";
+        sql += "%scriptclass com.exasol.adapter.jdbc.JdbcAdapter;";
         for (String includePath : jarIncludes) {
-            sql += "  %jar " + includePath + ";\n";
+            sql += " %jar " + includePath + ";\n";
         }
         //sql += " %jvmoption -Xms64m -Xmx64m;";
         sql += "/";
@@ -82,7 +78,7 @@ public class AbstractIntegrationTest {
         createJDBCAdapter(connection, jarIncludes);
     }
 
-    public static void createVirtualSchema(Connection conn, String virtualSchemaName, String dialect, String remoteCatalog, String remoteSchema, String connectionName, String user, String password, String adapter, String remoteConnectionString, boolean isLocal, String debugAddress, String tableFilter, String suffix) throws SQLException {
+    public static void createVirtualSchema(Connection conn, String virtualSchemaName, String dialect, String remoteCatalog, String remoteSchema, String connectionName, String user, String password, String adapter, String remoteConnectionString, boolean isLocal, String debugAddress, String tableFilter) throws SQLException {
         removeVirtualSchema(conn, virtualSchemaName);
         String sql = "CREATE VIRTUAL SCHEMA " + virtualSchemaName;
         sql += " USING " + adapter;
@@ -116,15 +112,12 @@ public class AbstractIntegrationTest {
         if (!tableFilter.isEmpty()) {
             sql += " TABLE_FILTER='" + tableFilter + "'";
         }
-        if (suffix != null) {
-            sql += " " + suffix;
-        }
         conn.createStatement().execute(sql);
     }
 
-    public static void createVirtualSchema(String virtualSchemaName, String dialect, String remoteCatalog, String remoteSchema, String connectionName, String user, String password, String adapter, String remoteConnectionString, boolean isLocal, String debugAddress, String tableFilter, String suffix) throws SQLException {
+    public static void createVirtualSchema(String virtualSchemaName, String dialect, String remoteCatalog, String remoteSchema, String connectionName, String user, String password, String adapter, String remoteConnectionString, boolean isLocal, String debugAddress, String tableFilter) throws SQLException {
         checkConnection();
-        createVirtualSchema(connection, virtualSchemaName, dialect, remoteCatalog, remoteSchema, connectionName, user, password, adapter, remoteConnectionString, isLocal, debugAddress, tableFilter, suffix);
+        createVirtualSchema(connection, virtualSchemaName, dialect, remoteCatalog, remoteSchema, connectionName, user, password, adapter, remoteConnectionString, isLocal, debugAddress, tableFilter);
     }
 
     public static void createConnection(Connection conn, String connectionName, String connectionString, String user, String password) throws SQLException {
@@ -229,7 +222,7 @@ public class AbstractIntegrationTest {
     public static void matchSingleRowExplain(String query, String expectedExplain) throws SQLException {
         checkConnection();
         matchSingleRowExplain(connection, query, expectedExplain);
-   }
+    }
 
     private static List<Object> rowToObject(ResultSet resultSet) throws SQLException {
         int colCount = resultSet.getMetaData().getColumnCount();
